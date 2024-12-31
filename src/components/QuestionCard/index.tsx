@@ -17,7 +17,15 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   isAnswerCorrect,
 }) => {
   return (
-    <div className="question-card">
+    <div className="question-card flex items-center justify-center">
+      <div className="option-side flex flex-col">
+        <button
+          onClick={() => onAnswer(options[0] === correctAnswer)}
+          className={`btn ${options[0] === correctAnswer ? 'correct-btn' : 'wrong-btn'}`}
+        >
+          {options[0]}
+        </button>
+      </div>
       <div
         className={`question-circle ${
           isAnswerCorrect === true
@@ -29,18 +37,13 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
       >
         <p>{question}</p>
       </div>
-      <div className="question-buttons">
-        {options.map((option, index) => (
-          <button
-            key={index}
-            onClick={() => onAnswer(option === correctAnswer)}
-            className={`btn ${
-              option === correctAnswer ? 'correct-btn' : 'wrong-btn'
-            }`}
-          >
-            {option}
-          </button>
-        ))}
+      <div className="option-side flex flex-col">
+        <button
+          onClick={() => onAnswer(options[1] === correctAnswer)}
+          className={`btn ${options[1] === correctAnswer ? 'correct-btn' : 'wrong-btn'}`}
+        >
+          {options[1]}
+        </button>
       </div>
     </div>
   );
