@@ -1,0 +1,54 @@
+.question-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .question-circle {
+    background-color: black;
+    color: white;
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.5s ease;
+  }
+  
+  .question-circle.correct {
+    background-color: green;
+  }
+  
+  .question-circle.wrong {
+    background-color: rgb(255, 0, 0);
+  }
+  
+  .question-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+ /* .correct-btn {
+    background-color: green;
+    color: white;
+  }
+  
+  .wrong-btn {
+    background-color: red;
+    color: white;
+  }*/
+  

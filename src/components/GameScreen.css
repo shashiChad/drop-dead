@@ -1,0 +1,67 @@
+.game-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  background-color: #b2f4f8;
+  overflow: hidden;
+}
+
+.game-header {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.logo {
+  width: 60px;
+  height: 60px;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.game-question {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 80%;
+  margin-bottom: 20px;
+}
+
+.character img {
+  width: 80px;
+  transition: transform 1s ease-in-out;
+}
+
+.character.correct img {
+  transform: translateY(-50px) translateX(30px);
+}
+
+.character.wrong img {
+  animation: shake 0.5s ease-in-out infinite;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.treasure img {
+  width: 60px;
+  transition: transform 1s ease-in-out;
+}
+
+.treasure.open img {
+  transform: scale(1.2);
+}

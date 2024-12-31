@@ -2,6 +2,8 @@ import React from 'react'
 import character from "../../assets/images/character.png";
 import treasure from "../../assets/images/treasure.png";
 import { useNavigate } from 'react-router-dom';
+import downarrow from "../../assets/images/downarrow.png";
+import uparrow from "../../assets/images/uparrow.png";
 const TutorialScreen: React.FC = () => {
   const navigate = useNavigate();
 
@@ -13,16 +15,16 @@ const TutorialScreen: React.FC = () => {
         <div className="w-80 h-screen bg-gray-600 flex flex-col items-center justify-around py-8 text-white">
             <h1 className="text-3xl font-bold uppercase">Tutorials</h1>
             <div className="flex items-center justify-center">
-              <div className="w-15 h-15 bg-white rounded-lg flex items-center justify-center text-black">
-                 Up arrow
+              <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-black">
+                 <img src={uparrow} alt="arrow" />
               </div>
             </div>
             <div className="w-32 h-32 bg-black rounded-full flex items-center justify-center text-white font-bold text-lg">
                 Question ??
             </div>
             <div className="flex items-center justify-center">
-              <div className="w-15 h-15 bg-white rounded-lg flex items-center justify-center text-black">
-                 Down arrow
+              <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-black">
+                 <img src={downarrow} alt="arrow" />
               </div>
             </div>
             <p className="text-center text-sm px-4">

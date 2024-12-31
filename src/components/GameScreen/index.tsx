@@ -1,74 +1,72 @@
 import React, { useState } from 'react';
 import QuestionCard from '../QuestionCard';
-import { AnimatePresence, motion } from 'framer-motion';
+import '../GameScreen.css';
+import character from "../../assets/images/character.png";
+import Cartoon from "../../assets/images/Cartoon.png";
+import treasure from "../../assets/images/treasure.png";
 
-interface Question {
-  id: number;
-  question: string;
-  correctAnswer: string;
-  options: string[];
-}
-
-const questions: Question[] = [
-  {
-    id: 1,
-    question: 'Longest Bone in Human Body?',
-    correctAnswer: 'THE FEMUR',
-    options: ['THE FEMUR', 'THE SPINE', 'THE SKULL']
-  },
-  {
-    id: 2,
-    question: 'What do we call animals that only eat plants?',
-    correctAnswer: 'HERBIVORES',
-    options: ['CARNIVOROUS', 'HERBIVORES', 'OMNIVORES']
-  },
+// Question Data
+const questions = [
+  { question: 'Longest Bone in Human Body?', options: ['THE STAPES', 'THE FEMUR'], correct: 'THE FEMUR' },
+  { question: 'Largest Planet in Solar System?', options: ['EARTH', 'JUPITER'], correct: 'JUPITER' },
+  { question: 'Fastest Land Animal?', options: ['LION', 'CHEETAH'], correct: 'CHEETAH' }
 ];
 
 const GameScreen: React.FC = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState('');
-  const [score, setScore] = useState(0);
+  const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
 
-  const currentQuestion = questions[currentQuestionIndex];
+  const handleAnswer = (isCorrect: boolean) => {
+    setIsAnswerCorrect(isCorrect);
 
-  const handleAnswerSelect = (answer: string) => {
-    setSelectedAnswer(answer);
-    if (answer === currentQuestion.correctAnswer) {
-      setScore(score + 1);
-    }
     setTimeout(() => {
-      if (currentQuestionIndex < questions.length - 1) {
-        setCurrentQuestionIndex(currentQuestionIndex + 1);
-        setSelectedAnswer('');
-      } else {
-        alert('Game Over! Your score: ${score + (answer === currentQuestion.correctAnswer ? 1 : 0)}');
+      setIsAnswerCorrect(null); // Reset animation state
+      if (isCorrect) {
+        if (currentQuestionIndex < questions.length - 1) {
+          setCurrentQuestionIndex(currentQuestionIndex + 1); // Move to next question
+        } else {
+          alert('Game Over! You finished all questions.');
+        }
       }
-    }, 1500);
+    }, 2000);
   };
 
   return (
-    <div className="h-screen overflow-hidden">
-      <AnimatePresence mode="wait">
-         <motion.div
-         key={currentQuestion.id}
-         initial={{x: '100vw', opacity:0}}
-         animate={{ x:0, opacity:1}}
-         exit={{x:'-100vw', opacity: 0}}
-         transition={{type: 'spring',stiffness:100}}
-         className="h-full"
-         >
-            <QuestionCard
-             question={currentQuestion.question}
-             options={currentQuestion.options}
-             correctAnswer={currentQuestion.correctAnswer}
-             selectedAnswer={selectedAnswer}
-             onSelectAnswer={handleAnswerSelect}
-            />
-         </motion.div>
-      </AnimatePresence>
-      {/*Score Dispaly*/}
-      <div className="absolute top-4 right-4 text-xl font-bold">
-        Score:{score}
+    <div className="game-screen">
+      <div className="game-header">
+        <img src={Cartoon} alt="Logo" className="logo" />
+        
+      </div>
+
+      <div className="game-question">
+        <QuestionCard
+          question={questions[currentQuestionIndex].question}
+          options={questions[currentQuestionIndex].options}
+          correctAnswer={questions[currentQuestionIndex].correct}
+          onAnswer={handleAnswer}
+          isAnswerCorrect={isAnswerCorrect}
+        />
+      </div>
+
+      <div className="game-bottom">
+        <div
+          className={`character ${
+            isAnswerCorrect === true
+              ? 'correct'
+              : isAnswerCorrect === false
+              ? 'wrong'
+              : ''
+          }`}
+        >
+          <img src={character} alt="Character" />
+        </div>
+        <div
+          className={`treasure ${
+            isAnswerCorrect === true ? 'open' : ''
+          }`}
+        >
+          <img src={treasure} alt="Treasure" />
+        </div>
       </div>
     </div>
   );
