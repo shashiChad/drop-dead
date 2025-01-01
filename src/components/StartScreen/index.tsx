@@ -1,7 +1,7 @@
 import React from "react";
 import Cartoon from "../../assets/images/Cartoon.png";
-import character from "../../assets/images/character.png";
-import treasure from "../../assets/images/treasure.png";
+import character1 from "../../assets/images/character1.png";
+import treasure1 from "../../assets/images/treasure1.png";
 import { useNavigate } from "react-router-dom";
 const StartScreen: React.FC = () => {
   const navigate = useNavigate();
@@ -36,12 +36,12 @@ const StartScreen: React.FC = () => {
         {/* Bottom Viking Warrior and Chest */}
         <div className="flex justify-between w-full px-6">
           <img
-            src={character}
+            src={character1}
             alt="Warrior"
             className="w-16 h-16 object-contain"
           />
           <img 
-          src={treasure}
+          src={treasure1}
           alt="treasure"
           className="w-16 h-16 object-contain"
           
