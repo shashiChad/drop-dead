@@ -9,10 +9,11 @@ import character5 from "../../assets/images/character5.png";
 import Cartoon from "../../assets/images/Cartoon.png";
 import treasure1 from "../../assets/images/treasure1.png";
 import treasure2 from "../../assets/images/treasure2.png";
-import treasure3 from "../../assets/images/treasure3.png";
-import coin from "../../assets/images/coin.png";
+import treasure3 from "../../assets/images/treasure3.png"; // New Treasure
+import coin from "../../assets/images/coin.png"; // Coin Image
 import back from "../../assets/images/back.png";
 
+// Question Data
 const questions = [
   { question: 'Longest Bone in Human Body?', options: ['THE STAPES', 'THE FEMUR'], correct: 'THE FEMUR' },
   { question: 'Largest Planet in Solar System?', options: ['EARTH', 'JUPITER'], correct: 'JUPITER' },
@@ -24,59 +25,74 @@ const GameScreen: React.FC = () => {
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
   const [currentCharacter, setCurrentCharacter] = useState(0);
   const [treasureImage, setTreasureImage] = useState(treasure1);
-  const [showCoin, setShowCoin] = useState(false);
+  const [showCoin, setShowCoin] = useState(false); // New state for coin visibility
 
   const characterImages = [character1, character2, character3, character4, character5];
-  const animationDuration = 5000;
+  const animationDuration = 5000; // Total animation duration in milliseconds
+  const timePerImage = animationDuration / characterImages.length; // Time to display each character image
 
-  // Track the current question status correctly
   useEffect(() => {
     let interval: number | null = null;
-
-    // Ensure isAnswerCorrect is available for interval logic
+  
     if (isAnswerCorrect !== null) {
       interval = window.setInterval(() => {
         setCurrentCharacter((prev) => {
           const nextIndex = prev + 1;
-
-          if (nextIndex === characterImages.length - 1) {
-            setTreasureImage(isAnswerCorrect ? treasure3 : treasure2);
-            setShowCoin(isAnswerCorrect);
+  
+          // Trigger events when character reaches specific stages
+          if (nextIndex === Math.floor(characterImages.length * 0.7)) {
+            setTreasureImage(treasure1); // Treasure transitions to treasure1 at 70%
           }
-
+  
+          if (nextIndex === characterImages.length) {
+            setTreasureImage(treasure2); // Treasure transitions to treasure2 at 95%
+          }
+  
+          if (nextIndex === characterImages.length) {
+            setTimeout(() => {
+              setTreasureImage(treasure3); // Treasure transitions to treasure3
+              if(isAnswerCorrect){
+                setShowCoin(true); // Coin appears only if the answer is correct
+              }
+            }, 1000); // Delay of 1 second after reaching 95%
+          }
+  
+          // Stop animation at `character5`
           if (nextIndex >= characterImages.length) {
-            clearInterval(interval as number); // Proper clearing of interval
-            return prev;
+            window.clearInterval(interval as number);
+            return characterImages.length - 1; // Stop at `character5`
           }
-
+  
           return nextIndex;
         });
-      }, animationDuration / characterImages.length);
+      }, timePerImage);
     }
-
+  
     return () => {
-      if (interval !== null) {
-        clearInterval(interval); // Ensure clearing interval on cleanup
-      }
+      if (interval !== null) window.clearInterval(interval);
     };
   }, [isAnswerCorrect]);
+  
+
 
   const handleAnswer = (isCorrect: boolean) => {
     setIsAnswerCorrect(isCorrect);
-
-    // Timeout logic to reset everything after the animation duration
+  
+    // Reset states after animation and hold
     setTimeout(() => {
-      setIsAnswerCorrect(null); // Reset the answer state
-      setTreasureImage(treasure1); // Reset treasure image
-      setShowCoin(false); // Hide the coin
+      setIsAnswerCorrect(null);
+      setTreasureImage(treasure1); // Reset treasure to closed
+      setShowCoin(false); // Hide coin
       setCurrentCharacter(0); // Reset character animation
-
-      // Move to the next question if it's correct
-      if (isCorrect && currentQuestionIndex < questions.length - 1) {
-        setCurrentQuestionIndex((prev) => prev + 1);
+  
+      if (currentQuestionIndex < questions.length - 1) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1); // Move to next question
+      } else {
+        alert('Game Over! You finished all questions.');
       }
-    }, animationDuration + 2000); // After animation duration
+    }, animationDuration + 3000); // Animation duration + 3-second hold
   };
+  
 
   return (
     <div className="game-screen h-screen">
@@ -90,30 +106,42 @@ const GameScreen: React.FC = () => {
           options={questions[currentQuestionIndex].options}
           correctAnswer={questions[currentQuestionIndex].correct}
           onAnswer={handleAnswer}
-          isAnswerCorrect={isAnswerCorrect} // Pass isAnswerCorrect to the QuestionCard
+          isAnswerCorrect={isAnswerCorrect}
         />
       </div>
 
-      <div className="game-bottom relative bottom-0">
+      <div className="game-bottom">
         <img src={back} alt="background" className="w-screen" />
         <div className="flex">
-          <img
-            src={characterImages[currentCharacter]}
-            alt="Character"
-            className="relative bottom-60 h-60 w-52 z-20"
-          />
-          <img
-            src={treasureImage}
-            alt="Treasure"
-            className="relative h-60 bottom-60 -right-5 z-0"
-          />
-          {showCoin && (
+          <div
+            className={`character ${
+              isAnswerCorrect === true
+                ? 'correct'
+                : isAnswerCorrect === false
+                ? 'wrong'
+                : ''
+            }`}
+          >
             <img
-              src={coin}
-              alt="Coin"
-              className="absolute bottom-52 right-10 h-20 w-20 z-30"
+              src={characterImages[currentCharacter]}
+              alt="Character"
+              className="relative bottom-60 h-60 w-52 z-20"
             />
-          )}
+          </div>
+          <div
+            className={`treasure ${
+              isAnswerCorrect === true ? 'open' : ''
+            }`}
+          >
+            <img src={treasureImage} alt="Treasure" className="relative h-60 bottom-60 -right-5 z-0" />
+            {showCoin && (
+              <img
+                src={coin}
+                alt="Coin"
+                className="absolute bottom-52 right-10 transform -translate-x-1/2 h-20 w-20 z-30"
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>

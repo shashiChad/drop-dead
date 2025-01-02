@@ -6,6 +6,7 @@ interface QuestionCardProps {
   options: string[];
   correctAnswer: string;
   onAnswer: (isCorrect: boolean) => void;
+  isAnswerCorrect: boolean | null;
 }
 
 const QuestionCard: React.FC<QuestionCardProps> = ({
@@ -16,35 +17,65 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
 }) => {
   const [droppedOption, setDroppedOption] = useState<string | null>(null);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
+  const [dragStartY, setDragStartY] = useState<number | null>(null);
 
   useEffect(() => {
-    // Reset state whenever a new question is loaded
     setDroppedOption(null);
     setIsAnswerCorrect(null);
+    setDragStartY(null);
   }, [question]);
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>, option: string) => {
-    e.preventDefault();
+  // Handles the drop logic
+  const handleDrop = (option: string) => {
     const isCorrect = option === correctAnswer;
     setDroppedOption(option);
     setIsAnswerCorrect(isCorrect);
     onAnswer(isCorrect);
   };
 
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  // Mouse drag events
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
+    e.dataTransfer.setData('text/plain', 'dragging');
+  };
+
+  const handleMouseDrop = (e: React.DragEvent<HTMLDivElement>, option: string) => {
+    e.preventDefault();
+    if (!droppedOption) {
+      handleDrop(option);
+    }
+  };
+
+  const handleMouseDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
 
+  // Touch drag events
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    const touch = e.touches[0];
+    setDragStartY(touch.clientY);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    const touch = e.touches[0];
+    const deltaY = touch.clientY - (dragStartY || 0);
+
+    if (deltaY < -50 && !droppedOption) {
+      handleDrop(options[0]);
+    } else if (deltaY > 50 && !droppedOption) {
+      handleDrop(options[1]);
+    }
+  };
+
   return (
-    <div className="quiz-container">
+    <div className="quiz-container h-[25rem]">
       {/* Option above */}
       {!droppedOption || droppedOption === options[0] ? (
         <div
           className={`option option-above ${
             droppedOption === options[0] ? 'highlighted' : ''
           }`}
-          onDrop={(e) => handleDrop(e, options[0])}
-          onDragOver={handleDragOver}
+          onDrop={(e) => handleMouseDrop(e, options[0])}
+          onDragOver={handleMouseDragOver}
         >
           {options[0]}
         </div>
@@ -60,9 +91,9 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
             : ''
         }`}
         draggable={!droppedOption}
-        onDragStart={(e) => {
-          e.dataTransfer.setData('text/plain', 'dragging');
-        }}
+        onDragStart={handleDragStart}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
         style={{
           position: droppedOption ? 'absolute' : 'relative',
           top:
@@ -83,8 +114,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           className={`option option-below ${
             droppedOption === options[1] ? 'highlighted' : ''
           }`}
-          onDrop={(e) => handleDrop(e, options[1])}
-          onDragOver={handleDragOver}
+          onDrop={(e) => handleMouseDrop(e, options[1])}
+          onDragOver={handleMouseDragOver}
         >
           {options[1]}
         </div>
