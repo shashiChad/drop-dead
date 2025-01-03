@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../QuestionCard.css';
+import '../../styles/QuestionCard.css';
 
 interface QuestionCardProps {
   question: string;
