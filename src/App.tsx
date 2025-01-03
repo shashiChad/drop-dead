@@ -1,9 +1,9 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import './App.css'
-import StartScreen from './components/StartScreen'
-import TutorialScreen from './components/TutorialScreen';
-import GameScreen from './components/GameScreen'
+import StartScreen from './base/StartScreen'
+import TutorialScreen from './base/TutorialScreen';
+import GameScreen from './container/GameScreen'
 
 const App: React.FC = () => {
  return (

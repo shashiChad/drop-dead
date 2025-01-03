@@ -1,9 +1,9 @@
 import React from 'react'
-import character1 from "../../assets/images/character1.png";
-import treasure1 from "../../assets/images/treasure1.png";
+import character1 from "../../Resources/images/character1.png";
+import treasure1 from "../../Resources/images/treasure1.png";
 import { useNavigate } from 'react-router-dom';
-import downarrow from "../../assets/images/downarrow.png";
-import uparrow from "../../assets/images/uparrow.png";
+import downarrow from "../../Resources/images/downarrow.png";
+import uparrow from "../../Resources/images/uparrow.png";
 const TutorialScreen: React.FC = () => {
   const navigate = useNavigate();
 

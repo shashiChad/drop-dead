@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import QuestionCard from '../QuestionCard';
-import '../GameScreen.css';
-import character1 from "../../assets/images/character1.png";
-import character2 from "../../assets/images/character2.png";
-import character3 from "../../assets/images/character3.png";
-import character4 from "../../assets/images/character4.png";
-import character5 from "../../assets/images/character5.png";
-import Cartoon from "../../assets/images/Cartoon.png";
-import treasure1 from "../../assets/images/treasure1.png";
-import treasure2 from "../../assets/images/treasure2.png";
-import treasure3 from "../../assets/images/treasure3.png"; // New Treasure
-import coin from "../../assets/images/coin.png"; // Coin Image
-import back from "../../assets/images/back.png";
+import QuestionCard from '../../views/QuestionCard';
+import '../../styles/GameScreen.css';
+import character1 from "../../Resources/images/character1.png";
+import character2 from "../../Resources/images/character2.png";
+import character3 from "../../Resources/images/character3.png";
+import character4 from "../../Resources/images/character4.png";
+import character5 from "../../Resources/images/character5.png";
+import Cartoon from "../../Resources/images/Cartoon.png";
+import treasure1 from "../../Resources/images/treasure1.png";
+import treasure2 from "../../Resources/images/treasure2.png";
+import treasure3 from "../../Resources/images/treasure3.png"; // New Treasure
+import coin from "../../Resources/images/coin.png"; // Coin Image
+import back from "../../Resources/images/back.png";
 
 // Question Data
 const questions = [

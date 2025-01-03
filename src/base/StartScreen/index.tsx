@@ -1,7 +1,7 @@
 import React from "react";
-import Cartoon from "../../assets/images/Cartoon.png";
-import character1 from "../../assets/images/character1.png";
-import treasure1 from "../../assets/images/treasure1.png";
+import Cartoon from "../../Resources/images/Cartoon.png";
+import character1 from "../../Resources/images/character1.png";
+import treasure1 from "../../Resources/images/treasure1.png";
 import { useNavigate } from "react-router-dom";
 const StartScreen: React.FC = () => {
   const navigate = useNavigate();
